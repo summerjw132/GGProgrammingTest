@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*Note: Monobehaviour was only used to test this object in Unity editor.
+ *      The code can be run as a standalone script by running
+ *      CalculateCoinTotal()
+ */
 public class ReelStripGrid : MonoBehaviour
 {
 
