@@ -8,7 +8,7 @@ public class Match3Button : MonoBehaviour
     bool facedown = true;
     private Match3Controller controller;
     private Match3Item.Item match3Item;
-    
+
 
     // Start is called before the first frame update
     void Start()
@@ -28,15 +28,13 @@ public class Match3Button : MonoBehaviour
         this.facedown = facedown;
         if (facedown)
         {
-            this.GetComponent<Image>().color = Color.grey;
+            //this.GetComponent<Image>().color = Color.grey;
             //Debug.Log("I'm facedown!");
         }
     }
 
     public void FlipOver()
     {
-
-        
 
         //If the button is facedown && we haven't selected 3 or more buttons
         if (facedown && controller.GetIsActive())
@@ -49,28 +47,33 @@ public class Match3Button : MonoBehaviour
 
             if(random < 50)
             {
-                this.GetComponent<Image>().color = Color.black;
+                //this.GetComponent<Image>().color = Color.black;
                 match3Item = Match3Item.Item.Mini;
+                this.GetComponent<Image>().sprite = controller.miniSprite;
 
             }else if(random > 50 && random < 75)
             {
-                this.GetComponent<Image>().color = Color.red;
+                //this.GetComponent<Image>().color = Color.red;
                 match3Item = Match3Item.Item.Minor;
+                this.gameObject.GetComponent<Image>().sprite = controller.minorSprite;
             }
             else if (random > 75 && random < 90)
             {
-                this.GetComponent<Image>().color = Color.yellow;
+                //this.GetComponent<Image>().color = Color.yellow;
                 match3Item = Match3Item.Item.Maxi;
+                this.gameObject.GetComponent<Image>().sprite = controller.maxiSprite;
             }
             else if (random > 90 && random < 98)
             {
-                this.GetComponent<Image>().color = Color.green;
+                //this.GetComponent<Image>().color = Color.green;
                 match3Item = Match3Item.Item.Major;
+                this.gameObject.GetComponent<Image>().sprite = controller.majorSprite;
             }
             else
             {
-                this.GetComponent<Image>().color = Color.cyan;
+                //this.GetComponent<Image>().color = Color.cyan;
                 match3Item = Match3Item.Item.Grand;
+                this.gameObject.GetComponent<Image>().sprite = controller.grandSprite;
             }
 
             SetText(match3Item.ToString());
@@ -83,8 +86,16 @@ public class Match3Button : MonoBehaviour
                 //No,
                 //  display "No Match" panel
                 //  reset buttons
-                controller.CheckIfMatch3();
-                StartCoroutine(DelayGameBoard(1));
+                if (controller.CheckIfMatch3())
+                {
+
+                    StartCoroutine(DelayGameBoard(1, true));
+                }
+                else
+                {
+
+                    StartCoroutine(DelayGameBoard(1, false));
+                }
                 
             }
         }
@@ -97,11 +108,12 @@ public class Match3Button : MonoBehaviour
     }
 
     // Temporarily set the game board to not active so the player cannot interact with gameboard items
-    IEnumerator DelayGameBoard( float delayTime)
+    IEnumerator DelayGameBoard( float delayTime, bool victoryPanelActive)
     {
         
         controller.SetIsActive(false);
         yield return new WaitForSeconds(delayTime);
+        controller.ToggleVictoryPanel(victoryPanelActive);
         controller.ResetAllButtons();
         controller.SetIsActive(true);
         
