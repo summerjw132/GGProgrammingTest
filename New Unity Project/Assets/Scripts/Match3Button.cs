@@ -45,6 +45,7 @@ public class Match3Button : MonoBehaviour
 
             int random = Random.Range(0, 99);
 
+
             if(random < 50)
             {
                 //this.GetComponent<Image>().color = Color.black;
@@ -75,18 +76,17 @@ public class Match3Button : MonoBehaviour
                 match3Item = Match3Item.Item.Grand;
                 this.gameObject.GetComponent<Image>().sprite = controller.grandSprite;
             }
+            controller.IncrementRewardCounterDict(match3Item.ToString());
 
             SetText(match3Item.ToString());
 
-            //If we met our button quota (3 buttons), 
-            if (controller.Match3ButtonQuotaMet())
-            {
+            
                 //Check if we got a match 3
                 //Yes, display victory panel
                 //No,
                 //  display "No Match" panel
                 //  reset buttons
-                if (controller.CheckIfMatch3())
+                if (controller.CheckIfMatch3(match3Item))
                 {
 
                     StartCoroutine(DelayGameBoard(1, true));
@@ -94,10 +94,8 @@ public class Match3Button : MonoBehaviour
                 else
                 {
 
-                    StartCoroutine(DelayGameBoard(1, false));
+                    //StartCoroutine(DelayGameBoard(1, false));
                 }
-                
-            }
         }
         
     }
